@@ -1,3 +1,8 @@
+/**
+ * Java implementation different version of binary search
+ *
+ * (working with kata2 - http://codekata.com/kata/kata02-karate-chop/
+ */
 public class Kata2 {
     private boolean checkIfValueIsInArray(int value, int[] sortedArray) {
         return  !(sortedArray.length == 0
@@ -5,6 +10,12 @@ public class Kata2 {
                 || sortedArray[sortedArray.length - 1] < value);
     }
 
+    /**
+     * Implementation iterative version of binary search
+     * @param value element which is looked into array
+     * @param sortedArray
+     * @return location of element in array or -1 if array don't consists element
+     */
     public int iterator_chop(int value, int[] sortedArray) {
         int result = -1;
         if (checkIfValueIsInArray(value, sortedArray)) {
@@ -24,6 +35,12 @@ public class Kata2 {
         return result;
     }
 
+    /**
+     * Implementation of recursive version of binary search
+     * @param value element which is looked into array
+     * @param sortedArray
+     * @return location of element in array or -a if array don't consists element
+     */
     public int recursive_chop(int value, int[] sortedArray) {
         int result = -1;
         if(checkIfValueIsInArray(value, sortedArray)) {

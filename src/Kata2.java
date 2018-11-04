@@ -17,22 +17,23 @@ public class Kata2 {
      * @return location of element in array or -1 if array don't consists element
      */
     public int iterator_chop(int value, int[] sortedArray) {
-        int result = -1;
         if (checkIfValueIsInArray(value, sortedArray)) {
-            int minIndex = 0;
-            int maxIndex = sortedArray.length;
-            for (int i = 0; i < sortedArray.length/2 + 1; i++) {
-                int index = minIndex + (maxIndex - minIndex) / 2;
-                if (sortedArray[index] == value) {
-                    result = index;
-                } else if (value < sortedArray[index]) {
-                    maxIndex = maxIndex != index ? index : index - 1;
-                } else if (sortedArray[index] < value) {
-                    minIndex = minIndex != index ? index : index + 1;
+            int first = 0;
+            int last = sortedArray.length - 1;
+
+            while (first <= last) {
+                int index = (first + last) / 2;
+                int checkedValue = sortedArray[index];
+                if (value < checkedValue){
+                    last = index - 1;
+                } else if (value > checkedValue) {
+                    first = index + 1;
+                } else {
+                    return index;
                 }
             }
         }
-        return result;
+        return -1;
     }
 
     /**
@@ -42,25 +43,29 @@ public class Kata2 {
      * @return location of element in array or -a if array don't consists element
      */
     public int recursive_chop(int value, int[] sortedArray) {
-        int result = -1;
         if(checkIfValueIsInArray(value, sortedArray)) {
             int middleIndex = sortedArray.length/2;
-            if (value == sortedArray[middleIndex]) {
-                result = middleIndex;
-            } else if (sortedArray.length > 1 ) {
-                if (value < sortedArray[middleIndex]) {
-                    int[] newArray = new int[middleIndex];
-                    System.arraycopy(sortedArray, 0, newArray, 0, middleIndex);
-                    result = recursive_chop(value, newArray);
-                } else if (value > sortedArray[middleIndex]) {
-                    int length = sortedArray.length - middleIndex - 1;
-                    int[] newArray = new int[length];
-                    System.arraycopy(sortedArray, middleIndex + 1, newArray, 0, length);
-                    int tempResult = recursive_chop(value, newArray);
-                    result = tempResult == -1 ? -1 : middleIndex + tempResult + 1;
+            int first = 0;
+            int last = sortedArray.length;
+
+            int checkedValue = sortedArray[middleIndex];
+            if (value != checkedValue) {
+                int newArraySize;
+                if (value < checkedValue) {
+                    last = middleIndex - 1;
+                    newArraySize = last - first + 1;
+                } else {
+                    first = middleIndex + 1;
+                    newArraySize = last - first;
                 }
+                int[] newArray = new int[newArraySize];
+                System.arraycopy(sortedArray,first,newArray,0,newArraySize);
+                int tempIndex = recursive_chop(value, newArray);
+                return tempIndex == -1 ? -1 : first + tempIndex;
+            } else {
+                return middleIndex;
             }
         }
-        return result;
+        return -1;
     }
 }
